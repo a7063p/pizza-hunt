@@ -11,6 +11,7 @@ const handleAddTopping = event => {
     return false;
   }
 
+
   const checkbox = document.createElement('input');
   checkbox.type = 'checkbox';
   checkbox.name = 'topping';
@@ -38,6 +39,7 @@ const handleAddTopping = event => {
 
 const handlePizzaSubmit = event => {
   event.preventDefault();
+ console.log('capture');
 
   const pizzaName = $pizzaForm.querySelector('#pizza-name').value;
   const createdBy = $pizzaForm.querySelector('#created-by').value;
@@ -51,6 +53,25 @@ const handlePizzaSubmit = event => {
   }
 
   const formData = { pizzaName, createdBy, size, toppings };
+ 
+  
+  fetch('/api/pizzas', {
+    method: 'POST',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(formData)
+  })
+    .then( response => response.json())
+    .then(postResponse => {
+      alert('Pizza created successfully!');
+      console.log(postResponse);
+    })
+    .catch(err => {
+      console.log(err);
+    });
+  
 };
 
 $pizzaForm.addEventListener('submit', handlePizzaSubmit);
